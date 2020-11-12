@@ -120,3 +120,24 @@ let sortedUnion: [Int] = union.sorted()
 let intersection: Set<Int> = setA.intersection(setB) //교집합
 let subtracting: Set<Int> = setA.subtracting(setB)  //차집합
 
+//5function
+func sum(a: Int, b: Int) -> Int {
+    return a + b
+}
+
+func printMyName(name: String) -> Void {
+    print(name)
+}
+
+func printYourName(name: String) {
+    print(name)
+}
+
+func maximumIntegerValue() -> Int {
+    return Int.max
+}
+
+print(sum(a: 3, b: 5))
+printMyName(name: "jeonghwan")
+printYourName(name: "hana")
+print(maximumIntegerValue())
