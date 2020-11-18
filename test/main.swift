@@ -180,3 +180,40 @@ func runAnother(function: (String, String) -> Void) {
 
 runAnother(function: greeting(friend:me:))
 runAnother(function: someFunction)
+
+//9조건문
+let someInteger = 100
+
+if someInteger < 100 {
+    print("100미만")
+} else if someInteger > 100 {
+    print("100 초과")
+} else {
+    print("100")
+}
+//if someInteger {} 안대요. 항상 bool 타입
+
+switch someInteger {
+case 0:
+    print("zero")
+case 1..<100: //1이상 100미만
+    print("1~99")
+case 100:
+    print("100")
+case 101...Int.max: //101이상
+    print("over 100")
+default:
+    print("unknown")
+}
+
+switch "bye9" {
+case "jake", "john":
+    print("jake")
+    //fallthrough 자동으로 break걸리는걸 안걸리게
+case "mina":
+    print("mina")
+case "bye9":
+    print("bye9!!!")
+default:
+    print("unknown")
+}
