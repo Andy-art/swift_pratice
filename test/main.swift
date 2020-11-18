@@ -141,3 +141,42 @@ print(sum(a: 3, b: 5))
 printMyName(name: "jeonghwan")
 printYourName(name: "hana")
 print(maximumIntegerValue())
+
+//8함수 고급
+func greeting(friend: String, me: String = "bye9") {
+    print("Hello \(friend)! I'm \(me)")
+}
+
+//매개변수 기본값을 가지는 매개변수는 생략 가능
+greeting(friend: "hana") //Hello hana! I'm bye9
+greeting(friend: "john", me: "eric")
+
+//전달인자 레이블
+//함수 내부 : 매개변수 이름 사용
+func greeting(to friend: String, from me: String) {
+    print("Hello \(friend)! I'm \(me)")
+}
+//함수 외부 : 전달 인자 레이블 사용
+greeting(to: "hana", from: "bye9")
+
+//가변 매개변수
+func sayHelloToFriends(me: String, friends: String...) -> String {
+    return "Hello \(friends)! I'm \(me)!"
+}
+
+print(sayHelloToFriends(me: "bye9", friends: "hana", "eric"))
+print(sayHelloToFriends(me: "bye9"))
+
+//데이터 타입으로서의 함수 사용 가능
+var someFunction: (String, String) -> Void = greeting(to:from:)
+someFunction("eric", "bye9")
+
+someFunction = greeting(friend:me:)
+someFunction("eirc", "bye9")
+
+func runAnother(function: (String, String) -> Void) {
+    function("jenny", "mike")
+}
+
+runAnother(function: greeting(friend:me:))
+runAnother(function: someFunction)
