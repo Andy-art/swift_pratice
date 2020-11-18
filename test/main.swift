@@ -217,3 +217,23 @@ case "bye9":
 default:
     print("unknown")
 }
+
+//10반복문
+var integerss = [1, 2, 3]
+let people = ["bye9": 10, "eric": 15, "mike": 12]
+
+for integer in integerss {
+    print(integer)
+}
+
+for (name, age) in people {
+    print("\(name): \(age)")
+}
+
+while integerss.count > 1 {
+    integerss.removeLast()
+}
+
+repeat {
+    integerss.removeLast()
+} while integerss.count > 0
