@@ -237,3 +237,31 @@ while integerss.count > 1 {
 repeat {
     integerss.removeLast()
 } while integerss.count > 0
+
+//11옵셔널 값이 있을 수도, 없을 수도 있다.
+func someFunction(someOptionalParam: Int?) {
+    // ...
+}
+func someFunction(someParam: Int) {
+    // ...
+}
+
+someFunction(someOptionalParam: nil)
+//someFunction(someParam: nil)
+ 
+//암시적 추출 옵셔널
+var optionalValue: Int! = 100
+
+switch optionalValue {
+case .none: //값이 없다면
+    print("This Optional variable is nil")
+case .some(let value):
+    print("Value is \(value)")
+}
+
+optionalValue = optionalValue + 1
+optionalValue = nil
+//optionalValue = optionalValue + 1
+
+//물음표를 이용한 옵셔널
+//optionalValue = optionalValue + 1 연산불가
