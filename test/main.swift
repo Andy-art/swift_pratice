@@ -265,3 +265,39 @@ optionalValue = nil
 
 //물음표를 이용한 옵셔널
 //optionalValue = optionalValue + 1 연산불가
+
+//12옵셔널 추출
+//1. 옵셔널 바인딩
+//_는 인자이름 생략
+func printName(_ name: String) {
+    print(name)
+}
+
+var myName: String! = nil
+
+if let name: String = myName { //nil이 아닐 때 실행
+    printName(name)
+} else {
+    print("myName == nil")
+}
+
+var myName2: String? = "bye9"
+var yourName: String? = nil
+
+if let name = myName2, let friend = yourName {
+    print("\(name) and \(friend)")
+}
+//yourName이 nil이기 때문에 실행x
+
+yourName = "hana"
+
+if let name = myName2, let friend = yourName {
+    print("\(name) and \(friend)")
+}
+
+//2. 강제추출
+printName(myName2!) //bye9
+myName2 = nil
+//print(myName2!) 런타임 오류
+
+
