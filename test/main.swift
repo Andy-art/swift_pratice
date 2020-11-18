@@ -300,4 +300,75 @@ printName(myName2!) //bye9
 myName2 = nil
 //print(myName2!) 런타임 오류
 
+let someInteger2 = 50
 
+switch someInteger2 {
+case 0:
+     print("zero")
+case 1..<100:
+     print("1~99")
+case 50:
+     print("50")
+default:
+    print("error")
+}
+
+//13구조체
+//구조체와 클래스는 프로그래머가 데이터를 용도에 맞게 묶어 표현하고자 할 때 용이합니다. 프로퍼티와 메서드를 사용하여 구조화된 데이터와 기능을 가질 수 있습니다.
+//프로퍼티는 구조체 안의 인스턴스 변수라고 생각, 메소드는 구조체 안의 함수
+
+/* 인스턴스(instance)는 해당 클래스의 구조로 컴퓨터 저장공간에서 할당된 실체를 의미한다. 여기서 클래스는 속성과 행위로 구성된 일종의 설계도이다. OOP에서 객체는 클래스와 인스턴스를 포함한 개념 */
+struct Sample {
+    //인스턴스 프로퍼티
+    var mutableProperty: Int = 100
+    let immutableProperty: Int = 100
+    //타입 프로퍼티 (static은 오버라이드 안됨) - 오버라이드란? 부모 클래스의 기능을 변경
+    static var typeProperty: Int = 100
+    
+    func instanceMethod() {
+        print("instance method")
+    }
+    static func typeMethod() {
+        print("type method")
+    }
+}
+//가변 인스턴스 -> 인스턴스 생성 후 내부 접근 가능
+var mutable: Sample = Sample()
+mutable.mutableProperty = 200
+
+let immutable: Sample = Sample()
+//immutable.mutableProperty = 140
+
+//타입 프로퍼티, 메소드 -> 바로 클래스명.() 로 접근 가능(Sample이라는 타입 자체에서 사용 가능)
+Sample.typeProperty = 300
+Sample.typeMethod()
+
+//mutable.typeProperty = 400
+
+struct Student {
+    var name: String = "unknown"
+    var `class`: String = "Swift" //`는 이스케이프 문자처럼 사용
+    //타입 메서드
+    static func selfIntroduce() {
+        print("학생타입입니다.")
+    }
+    //인스턴스 메서드
+    func selfIntroduce() {
+        print("저는 \(self.class)반 \(name)입니다.")
+    }
+}
+
+Student.selfIntroduce()
+
+var bye9: Student = Student()
+bye9.name = "bye9"
+bye9.class = "스위프트"
+bye9.selfIntroduce()
+
+let jina: Student = Student()
+//불변 인스턴스이므로 프로퍼티 값 변경 불가
+//jina.name = "jina"
+jina.selfIntroduce() //메소드는 호출가능
+
+
+//14클래스
