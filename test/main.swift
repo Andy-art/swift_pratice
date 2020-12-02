@@ -50,8 +50,8 @@ let integer = 100
 print(type(of: integer))
 let floatingPoint = 12.34
 print(type(of: floatingPoint))
-let apple = "A"
-print(type(of: apple))
+let apples = "A"
+print(type(of: apples))
 
 //3any,nil
 var someAny: Any = 100
@@ -422,3 +422,84 @@ let dragoncloud: Student2 = Student2()
 dragoncloud.name = "장용운"
 dragoncloud.class = "토익600"
 dragoncloud.selfIntroduce() //저는 토익600반 장용운입니다.
+//클래스,구조체,열거형에 포함되어있는 함수를 메소드라고 함. 따라서 함수가 범위가 큰 것임.
+
+//15열거형
+//각 case는 그 자체가 고유의 값
+enum Weekday {
+    case mon
+    case tue
+    case wed
+    case thu, fri, sat, sun
+}
+
+var day: Weekday = Weekday.mon
+//타입 생략 가능
+day = .sun
+
+//이 중에서 하나라도 빼먹으면 default를 꼭 구현해줘야함.
+switch day {
+case .mon, .tue, .wed, .thu:
+    print("평일입니다.")
+case Weekday.fri:
+    print("불금 파티!!!")
+case .sat, .sun:
+    print("신나는 주말")
+}
+
+//c언어의 enum처럼 정수값을 가질 수도 있음.
+//case별로 각각 다른 값을 가져야 함.
+enum Fruit: Int {
+    case apple = 0
+    case grape = 1
+    case peach //자동으로 1씩 증가해서 2
+}
+
+print("Fruit.peach.rawValue== \(Fruit.peach.rawValue)")
+
+//다른 원시값인 문자열도 가능
+enum School: String {
+    case elementary = "초등"
+    case middle = "중등"
+    case high = "고등"
+    case university
+}
+
+print("School.middle.rawValue == \(School.middle.rawValue)")
+print("School.university.rawValue == \(School.university.rawValue)")
+
+//해당하는 case가 없을수도있으므로 옵셔널 타입사용
+//let apple: Fruit = Fruit(rawValue: 0)
+let apple: Fruit? = Fruit(rawValue: 0)
+
+if let orange: Fruit = Fruit(rawValue: 5) {
+    print("rawValue 5에 해당하는 케이스는 \(orange)입니다.")
+} else {
+    print("rawValue 5에 해당하는 케이스가 없습니다")
+}
+
+//열거형안에 메소드 가능
+enum Month {
+    case dec, jan, feb
+    case mar, apr, may
+    case jun, jul, aug
+    case sep, oct, nov
+    
+    func printMessage() {
+        switch self {
+        case .mar, .apr, .may:
+            print("따스한 봄~")
+        case .jun, .jul, .aug:
+            print("여름 더워요")
+        case .sep, .oct, .nov:
+            print("가을은 독서의 계절")
+        case .dec, .jan, .feb:
+            print("추운 겨울")
+        }
+    }
+}
+
+Month.mar.printMessage()
+
+//16클래스 vs 구조체/열거형
+
