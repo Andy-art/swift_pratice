@@ -502,4 +502,55 @@ enum Month {
 Month.mar.printMessage()
 
 //16클래스 vs 구조체/열거형
+//참조 타입 - 값 타입
+//데이터를 전달할 때 값의 메모리 위치를 전달 - 데이터를 전달할 때 값을 복사하여 전달
+//상속 가능 - 상속 불가능
+struct ValueType {
+    var property = 1
+}
+class ReferenceType {
+    var property = 1
+}
+let firstStructInstance = ValueType()
+var secondStructInstance = firstStructInstance
+secondStructInstance.property = 2
 
+print("first stuct instance property : \(firstStructInstance.property)") //1
+print("second struct instance property : \(secondStructInstance.property)") //2
+
+let firstClassReference = ReferenceType()
+var secondClassReference = firstClassReference
+secondClassReference.property = 2
+
+print("first class reference property : \(firstClassReference.property)") //2
+print("second class reference property : \(secondClassReference.property)") //2
+
+//구조체는 값 타입이라 복사한 값이라 원래 값 변경 안됨.
+struct SomeStruct {
+    var someProperty: String = "Property"
+}
+
+var someStructInstance: SomeStruct = SomeStruct()
+
+func someFunction2(structInstance: SomeStruct) {
+    var localVar: SomeStruct = structInstance
+    localVar.someProperty = "ABC"
+}
+
+someFunction2(structInstance: someStructInstance)
+print(someStructInstance.someProperty) //property
+
+//클래스는 참조타입 -> 원래 값 변경 됨.
+class SomeClass2 {
+    var someProperty: String = "Property"
+}
+
+var someClassInstance: SomeClass2 = SomeClass2()
+
+func someFunction(classInstance: SomeClass2) {
+    var localVar: SomeClass2 = classInstance
+    localVar.someProperty = "ABC"
+}
+
+someFunction(classInstance: someClassInstance)
+print(someClassInstance.someProperty) //abc
