@@ -740,3 +740,66 @@ var sum3: Int {
 }
 print(sum3) //300
 
+
+//20프로퍼티 감시자
+//프로퍼티 값이 변경될 때 원하는 동작을 수행
+struct Money2 {
+    var currencyRate: Double = 1100 {
+        //바뀌기 직전에 호출
+        willSet(newRate) {
+            print("환율이 \(currencyRate)에서 \(newRate)으로 변경될 예정입니다")
+        }
+        //바뀐 후 호출
+        didSet(oldRate) {
+            print("환율이 \(oldRate)에서 \(currencyRate)으로 변경되었습니다")
+        }
+    }
+    var dollar: Double = 0 {
+        //willSet의 암시적 매개변수 이름 newValue
+        willSet {
+            print("\(dollar)달러에서 \(newValue)달러로 변경될 예정입니다")
+        }
+        //didSet의 암시적 매개변수 이름 oldValue
+        didSet {
+            print("\(oldValue)달러에서 \(dollar)달러로 변경되었습니다")
+        }
+    }
+    
+    //연산 프로퍼티
+    var won: Double {
+        get {
+            return dollar * currencyRate
+        }
+        set {
+            dollar = newValue / currencyRate
+        }
+        //프로퍼티 감시자와 동시에 사용 불가(willset, didset불가)
+    }
+}
+
+var moneyInMyPocket2: Money2 = Money2()
+//환율이 1100.0에서 1150.0으로 변경될 예정입니다
+moneyInMyPocket2.currencyRate = 1150
+//환율이 1100.0에서 1150.0으로 변경되었습니다.
+
+//0.0달러에서 10.0달러로 변경될 예정입니다
+moneyInMyPocket2.dollar = 10
+//0.0달러에서 10.0달러로 변경되었습니다
+
+print(moneyInMyPocket2.won) //11500.0
+
+//프로퍼티 감시자 역시 외부에 위치한 지역/전역 변수에도 모두 사용 가능
+var a2: Int = 100 {
+    willSet {
+        print("\(a2)에서 \(newValue)로 변경될 예정입니다")
+    }
+    didSet {
+        print("\(oldValue)에서 \(a2)로 변경되었습니다")
+    }
+}
+//100에서 200로 변경될 예정입니다
+a=200
+//100에서 200로 변경되었습니다
+
+
+//21상속
