@@ -605,3 +605,42 @@ calculated = calculate(a: 50, b: 10, method: { (left: Int, right: Int) -> Int in
 })
 print(calculated) //500
 
+//18클로저 고급
+var result: Int
+//후행 클로저 - 클로저가 함수의 마지막 전달인자일 때, 마지막 매개변수 이름 생략 가능
+result = calculate(a: 10, b: 10) { (left: Int, right: Int) -> Int in
+    return left + right
+}
+
+print(result) //20
+
+//반환타입 생략(calculate 함수의 method 매개변수는 Int 타입을 반환할 것이라는 사실을 알기 때문에)
+result =  calculate(a: 10, b: 10) { (left: Int, right: Int) in
+    return left + right
+}
+
+//단축 인자이름
+result = calculate(a: 10, b: 10, method: {
+    return $0 + $1
+})
+print(result) //20
+
+result = calculate(a: 10, b: 10) {
+    return $0 + $1
+}
+
+//암시적 반환 표현
+result = calculate(a: 10, b: 10) {
+    $0 + $1
+}
+//한 줄 가능
+result = calculate(a: 10, b: 10) { $0 + $1 }
+
+//축약 전 후
+result = calculate(a: 10, b: 10, method: { (left: Int, right: Int) -> Int in
+    return left + right
+})
+
+result = calculate(a: 10, b: 10) { $0 + $1 }
+
+//19프로퍼티
