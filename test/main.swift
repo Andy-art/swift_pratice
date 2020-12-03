@@ -554,3 +554,54 @@ func someFunction(classInstance: SomeClass2) {
 
 someFunction(classInstance: someClassInstance)
 print(someClassInstance.someProperty) //abc
+
+//17클로저 기본
+//클로저는 실행가능한 코드 블럭(함수는 이름이 있는 클로저)
+func sumFunction(a: Int, b: Int) -> Int {
+    return a+b
+}
+
+var sumResult: Int = sumFunction(a: 1, b: 2)
+print(sumResult) //3
+
+//클로저의 사용
+var sum2: (Int, Int) -> Int = { (a: Int, b: Int) -> Int in
+    return a + b
+}
+
+sumResult = sum2(1, 2)
+print(sumResult) //3
+
+//sum2변수에도 함수할당 가능
+sum2 = sumFunction(a:b:)
+sumResult = sum2(1, 2)
+print(sumResult) //3
+
+//함수의 전달인자로서의 클로저 사용 {}
+let add: (Int, Int) -> Int
+add = { (a: Int, b: Int) -> Int in
+    return a+b
+}
+let substract: (Int, Int) -> Int
+substract = { (a: Int, b: Int) -> Int in
+    return a-b
+}
+let divide: (Int, Int) -> Int
+divide = { (a: Int, b: Int) -> Int in
+    return a/b
+}
+
+//method라는 이름으로 클로저를 넘겨준다.
+func calculate(a: Int, b: Int, method: (Int, Int) -> Int) -> Int {
+    return method(a, b)
+}
+
+var calculated: Int
+calculated = calculate(a: 50, b: 10, method: add)
+print(calculated) //60
+
+calculated = calculate(a: 50, b: 10, method: { (left: Int, right: Int) -> Int in
+    return left * right
+})
+print(calculated) //500
+
