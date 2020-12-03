@@ -803,3 +803,88 @@ a=200
 
 
 //21상속
+//클래스, 프로토콜에서 가능
+//구조체, 열거형 불가능
+//다중상속 지원하지 않음.
+
+class Person3 {
+    //인스턴스 프로퍼티
+    var name: String = ""
+    
+    //인스턴스 메소드
+    func selfIntroduce() {
+        print("저는 \(name)입니다")
+    }
+    //final키워드를 사용하여 자식클래스로 물려줬을 때 자식클래스에서 재정의(Override) 방지
+    final func sayHello() {
+        print("hello")
+    }
+    
+    //타입 메소드
+    //재정의 불가(자식클래스에서)
+    static func typeMethod() {
+        print("type method - static")
+    }
+    //재정의 가능
+    class func classMethod() {
+        print("type method - class")
+    }
+    //재정의 가능한 class메소드라도 final키워드를 사용하면 재정의 할 수 없습니다
+    //메소드 앞의 static과 final class는 같은 역할
+    final class func finalClassMethod() {
+        print("type method - final class")
+    }
+}
+
+//person3을 상속받은 자식 클래스 student4
+class Student4: Person3 {
+    //저장 프로퍼티는 override재정의 불가능
+    //var name: String = ""
+    var major: String = ""
+    
+    override func selfIntroduce() {
+        print("저는 \(name)이고, 전공은 \(major)입니다")
+        super.selfIntroduce() //부모 클래스의 메소드 호출
+    }
+    //class를 사용한 타입 메소드는 재정의 가능
+    override class func classMethod() {
+        print("overriden type method - class")
+    }
+    
+    //static을 사용한 타입 메소드는 재정의 불가 ????????인스턴스 메소드와 타입 메소드의 차이????????
+    //override static func typeMethod() {    }
+    
+    //final키워드를 사용한 타입 메소드, 프로퍼티는 재정의 불가
+    //override func sayHello() { }
+    //override class func finalClassMethod() { }
+    
+}
+//person3클래스의 인스턴스
+let tom: Person3 = Person3()
+let hana: Student4 = Student4()
+
+tom.name = "tom"
+hana.name = "hana"
+hana.major = "swift"
+
+//저는 tom입니다
+tom.selfIntroduce()
+
+//저는 hana이고, 전공은 swift입니다
+hana.selfIntroduce()
+
+Person3.classMethod()
+Person3.typeMethod()
+Person3.finalClassMethod()
+
+//overriden type method - class
+Student4.classMethod()
+
+//type method - static
+Student4.typeMethod()
+
+//type method - final class
+Student4.finalClassMethod()
+
+
+//22
