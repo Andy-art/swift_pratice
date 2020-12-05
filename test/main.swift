@@ -1241,4 +1241,68 @@ doSomething(someone: yagom24)
 //숨을 쉽니다
 
 
-//25
+//25assert/guard
+//애플리케이션이 동작 도중에 생성하는 다양한 결과값을 동적으로 확인하고
+//안전하고 빠르게 처리할 수 있다.
+
+//디버깅 모드에서만 동작하며 조건의 검증을 위해서 사용
+var someInt25: Int = 0
+//0이면 그냥 지나치고, 아니면 메시지 출력(생략가능) 후 동작 중지
+assert(someInt25 == 0, "someInt != 0")
+
+someInt25 = 1
+//assert(someInt25 == 0) 동작 중지
+
+func functionWithAssert(age: Int?) {
+    assert(age != nil, "age == nil")
+    
+    assert((age! >= 0) && (age! <= 130), "나이값 입력이 잘못되었습니다")
+    print("당신의 나이는 \(age!)세입니다")
+}
+
+functionWithAssert(age: 50)
+//functionWithAssert(age: -1) 동작 중지
+
+//early exit
+//guard를 사용해서 잘못된 값의 전달 시 특정 실행구문을 빠르게 종료한다
+//디버깅 모드 뿐만 아니라 어떤 조건에서도 동작.
+//guard의 else 블럭 내부에는 특정 코드블럭을 종료하는 지시어(return, break 등)가 꼭 있어야 한다
+
+func functionWithGuard(age: Int?) {
+    //옵셔널 바인딩 먼저 실행 (age가 nil이거나 조건에 맞지않으면 실행안되고 바로 else문)
+    guard let unwrappedAge = age,
+          unwrappedAge < 130,
+          unwrappedAge >= 0 else {
+        print("나이값 입력이 잘못되었습니다")
+        return
+    }
+    print("당신의 나이는 \(unwrappedAge)세입니다")
+}
+
+var count = 1
+
+while true {
+    guard count < 3 else{
+        break
+    }
+    print(count)
+    count += 1
+}
+//1
+//2
+
+//info라는 딕셔너리에서 name이라는 키에 해당하는 값을 꺼내와봐서 그것들을 string으로 캐스팅 시도
+func someFunction25(info: [String: Any]) {
+    guard let name = info["name"] as? String else {
+        return
+    }
+    guard let age = info["age"] as? Int, age >= 0 else {
+        return
+    }
+    print("\(name): \(age)")
+}
+
+someFunction25(info: ["name": "jenny", "age": "10"])
+someFunction25(info: ["name": "mike"])
+someFunction25(info: ["name": "yagom", "age": 10]) //yagom: 10
+
