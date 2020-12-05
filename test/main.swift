@@ -1306,3 +1306,123 @@ someFunction25(info: ["name": "jenny", "age": "10"])
 someFunction25(info: ["name": "mike"])
 someFunction25(info: ["name": "yagom", "age": 10]) //yagom: 10
 
+
+//26프로토콜
+//특정 역할을 수행하기 위한 메소드, 프로퍼티, 이니셜라이저 등의 요구사항을 정의.
+
+//구조체, 클래스, 열거형은 프로토콜을 채택해서 프로토콜의 요구사항을 실제로 구현할 수 있다.
+//어떤 프로토콜의 요구사항을 모두 따르는 타입은 프로토콜을 준수하다 고 표현함
+
+protocol Talkable {
+    //프로퍼티 요구
+    //항상 var 키워드를 사용하며, get은 읽기만 가능해도 상관 없다는 뜻이며
+    //get과 set을 모두 명시하면 읽기 쓰기 모두 가능한 프로퍼티여야 한다.
+    var topic: String { get set }
+    var language: String { get }
+    
+    //메소드 요구
+    func talk()
+    
+    //이니셜라이저 요구
+    init(topic: String, language: String)
+}
+
+//프로토콜 채택 및 준수
+//Person26구조체는 Talkable 프로토콜을 채택했습니다.
+struct Person26: Talkable {
+    //저장 프로퍼티
+    var topic: String
+    let language: String
+    
+    /*
+    //연산 프로퍼티
+    var language: String { return "한국어" }
+    
+    var subject: String = ""
+    var topic: String {
+        set {
+            self.subject = newValue
+        }
+        get {
+            return self.subject
+        }
+    }*/
+    func talk() {
+        print("\(topic)에 대해 \(language)로 말합니다")
+    }
+    
+    init(topic: String, language: String) {
+        self.topic = topic
+        self.language = language
+    }
+}
+
+//프로토콜 상속(클래스와 다르게 다중상속 가능)
+protocol Readable {
+    func read()
+}
+protocol Writeable {
+    func write()
+}
+protocol ReadSpeakable: Readable {
+    //func read()
+    func speak()
+}
+protocol ReadWriteSpeakable: Readable, Writeable {
+    //func read()
+    //func write()
+    func speak()
+}
+struct SomeType: ReadWriteSpeakable {
+    func read() {
+        print("Read")
+    }
+    func write() {
+        print("Write")
+    }
+    func speak() {
+        print("Speak")
+    }
+}
+
+//클래스에서 상속과 프로토콜 채택을 동시에 하려면 상속 클래스 명시 후 채택할 프로토콜 작성
+class SuperClass26: Readable {
+    func read() { print("read")}
+}
+class SubClass26: SuperClass26, Writeable, ReadSpeakable {
+    func write() {
+        print("write")
+    }
+    func speak() {
+        print("speak")
+    }
+}
+
+//인스턴스가 프로토콜을 준수하는지 확인 (is, as 사용)
+let sup: SuperClass26 = SuperClass26()
+let sub: SubClass26 = SubClass26()
+
+var someAny26: Any = sup
+someAny26 is Readable //true
+someAny26 is ReadSpeakable //false
+
+someAny26 = sub
+someAny26 is Readable //true
+someAny26 is ReadSpeakable //true
+
+someAny26 = sup
+
+if let someReadable: Readable = someAny26 as? Readable {
+    someReadable.read()
+} //read
+/*if let someReadSpeakable: ReadSpeakable = someAny26 as? ReadWriteSpeakable {
+    someReadSpeakable.speak()
+} //동작 안함*/
+
+someAny26 = sub
+if let someReadable: Readable = someAny26 as? Readable {
+    someReadable.read()
+} //read
+
+
+//27
