@@ -1021,5 +1021,81 @@ donald = nil //donald 인스턴스가 더이상 필요없으므로 메모리에�
 
 
 //23옵셔널체이닝
+//옵셔널 체이닝은 옵셔널 요소 내부의 프로퍼티로
+//또다시 옵셔널이 연속적으로 연결되는 경우 유용하게 사용할 수 있다.
+class Person23 {
+    var name: String
+    var job: String?
+    var home: Apartment?
+    
+    init(name: String) {
+        self.name = name
+    }
+}
 
+class Apartment {
+    var buildingNumber: String
+    var roomNumber: String
+    var `guard`: Person23?
+    var owner: Person23?
+    
+    init(dong: String, ho: String) {
+        buildingNumber = dong
+        roomNumber = ho
+    }
+}
 
+let yagom23: Person23? = Person23(name: "yagom23")
+let apart: Apartment? = Apartment(dong: "101", ho: "202")
+let superman: Person23? = Person23(name: "superman")
+
+//만약 우리집 경비원의 직업이 궁금할때?
+//옵셔널 체이닝을 사용하지 않는다면
+func guardJob(owner: Person23?) {
+    if let owner = owner {
+        if let home = owner.home {
+            if let `guard` = home.guard {
+                if let guardJob = `guard`.job {
+                    print("우리집 경비원의 직업은 \(guardJob)입니다")
+                } else {
+                    print("우리집 경비원은 직업이 없어요")
+                }
+            }
+        }
+    }
+}
+guardJob(owner: yagom23)
+
+func guardJobWithOptionalChaining(owner: Person23?) {
+    if let guardJob = owner?.home?.guard?.job {
+        print("우리집 경비원의 직업은 \(guardJob)입니다")
+    } else {
+        print("우리집 경비원은 직업이 없어요")
+    }
+}
+guardJobWithOptionalChaining(owner: yagom23)
+//우리집 경비원은 직업이 없어요
+
+yagom23?.home?.guard?.job //nil
+yagom23?.home = apart
+yagom23?.home //Optional(Apartment)
+
+yagom23?.home?.guard //nil
+yagom23?.home?.guard = superman
+yagom23?.home?.guard //Optional(Person23)
+yagom23?.home?.guard?.name //superman
+yagom23?.home?.guard?.job //nil
+yagom23?.home?.guard?.job = "경비원"
+
+//nil병합 연산자
+var guardJob: String
+
+//앞에조건에 대한 값이 nil이라면 슈퍼맨을 집어넣음.
+guardJob = yagom23?.home?.guard?.job ?? "슈퍼맨"
+print(guardJob) //경비원
+
+yagom23?.home?.guard?.job = nil
+guardJob = yagom23?.home?.guard?.job ?? "슈퍼맨"
+print(guardJob) //슈퍼맨
+
+//24
