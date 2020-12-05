@@ -1098,4 +1098,147 @@ yagom23?.home?.guard?.job = nil
 guardJob = yagom23?.home?.guard?.job ?? "슈퍼맨"
 print(guardJob) //슈퍼맨
 
-//24
+//24타입 캐스팅
+//인스턴스의 타입을 확인하는 용도, 클래스의 인스턴스를 부모 혹은 자식 클래스의 타입으로 사용할 수 있는지 확인하는 용도
+//is, as사용
+
+//이는 int타입의 값을 받아들여서 double타입의 값을 하나 새로 생성하는 것이지 타입 캐스팅이 아님.
+//let someInt: Int = 100
+//let someDouble: Double = Double(someInt)
+
+class Person24 {
+    var name: String = ""
+    func breath() {
+        print("숨을 쉽니다")
+    }
+}
+
+class Student24: Person24 {
+    var school: String = ""
+    func goToSchool() {
+        print("등교를 합니다")
+    }
+}
+
+class UniversityStudent: Student24 {
+    var major: String = ""
+    func goToMT() {
+        print("멤버쉽 트레이닝을 갑니다!")
+    }
+}
+
+//인스턴스 하나씩 생성
+var yagom24: Person24 = Person24()
+var hana24: Student24 = Student24()
+var jason24: UniversityStudent = UniversityStudent()
+
+//is를 사용하여 타입 확인
+var result24: Bool
+
+//yagom24의 인스턴스 변수는 Person24의 타입인가?
+result24 = yagom24 is Person24 //true
+result24 = yagom24 is Student24 //false
+result24 = yagom24 is UniversityStudent //false
+
+result24 = hana24 is Person24 //true
+result24 = hana24 is Student24 //true
+result24 = hana24 is UniversityStudent //false
+
+result24 = jason24 is Person24 //true
+result24 = jason24 is Student24 //true
+result24 = jason24 is UniversityStudent //true
+
+if yagom24 is UniversityStudent {
+    print("yagom24는 대학생입니다")
+} else if yagom24 is Student24 {
+    print("yagom24는 학생입니다")
+} else if yagom24 is Person24 {
+    print("yagom24는 사람입니다.")
+} //yagom24는 사람입니다
+
+switch jason24 {
+case is Person24:
+    print("jason24는 사람입니다")
+case is Student24:
+    print("jason24는 학생입니다")
+case is UniversityStudent:
+    print("jason24는 대학생입니다")
+default:
+    print("jason24는 사람도, 학생도, 대학생도 아닙니다")
+} //jason은 사람입니다
+
+switch jason24 {
+case is UniversityStudent:
+    print("jason24는 대학생입니다")
+case is Student24:
+    print("jason24는 학생입니다")
+case is Person24:
+    print("jason24는 사람입니다")
+default:
+    print("jason24는 사람도, 학생도, 대학생도 아닙니다")
+} //jason24는 대학생입니다
+
+//업 캐스팅
+//as를 사용하여 부모클래스의 인스턴스로 사용할 수 있도록 컴파일러에게 타입정보를 전환해줌.
+//Any, AnyObject로도 타입정보 변환 가능.
+//암시적으로 처리되므로 생략해도 무방.
+
+//Person24는 Any타입이 될 수 있다.
+var mike24: Person24 = UniversityStudent() as Person24
+var jenny24: Student24 = Student24()
+var jina24: Any = Person24() as Any //as any는 생략가능
+
+//다운 캐스팅
+//as? (조건부 다운 캐스팅), as! (강제 다운 캐스팅)
+//자식 클래스의 인스턴스로 사용할 수 있도록 컴파일러에게 타입정보를 전환해줌.
+//(사람타입인데 학생일 수 있느냐? 이런것들 물어봄)
+
+var optionalCasted: Student24?
+
+//optional타입으로 반환
+optionalCasted = mike24 as? UniversityStudent
+optionalCasted = jenny24 as? UniversityStudent //nil
+optionalCasted = jina24 as? UniversityStudent //nil
+optionalCasted = jina24 as? Student24 //nil
+
+var forcedCasted: Student24
+
+//일반타입으로 반환
+forcedCasted = mike24 as! UniversityStudent
+//forcedCasted = jenny24 as! UniversityStudent //런타임오류
+//forcedCasted = jina24 as! UniversityStudent //런타임오류
+//forcedCasted = jina24 as! Student24 //런타임오류
+
+func doSomethingWithSwitch(someone: Person24) {
+    switch someone {
+    case is UniversityStudent:
+        (someone as! UniversityStudent).goToMT()
+    case is Student24:
+        (someone as! Student24).goToSchool()
+    case is Person24:
+        (someone as! Person24).breath()
+    }
+}
+
+//옵셔널 결과값을 받아와서 사용
+func doSomething(someone: Person24) {
+    if let UniversityStudent = someone as? UniversityStudent {
+        UniversityStudent.goToMT()
+    } else if let student24 = someone as? Student24 {
+        student24.goToSchool()
+    } else if let person24 = someone as? Person24 {
+        person24.breath()
+    }
+}
+
+doSomething(someone: mike24 as Person24)
+//멤버쉽 트레이닝을 갑니다
+doSomething(someone: mike24)
+//멤버쉽 트레이닝을 갑니다
+doSomething(someone: jenny24)
+//등교를 합니다
+doSomething(someone: yagom24)
+//숨을 쉽니다
+
+
+//25
