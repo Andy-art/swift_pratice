@@ -1487,4 +1487,121 @@ let stringFromInt: String = String(intTypeNumber: 100) //"100"
 let stringFromDouble: String = String(doubleTypeNumber: 100.0) //"100.0"
 
 
+//28오류처리
+//Error 프로토콜과 열거형을 통해서 오류를 표현함
 
+enum VendingMachineError: Error {
+    case invalidInput
+    case insufficientFunds(moneyNeeded: Int)
+    case outOfStock
+}
+
+//함수에서 발생한 오류 던지기
+//오류 발생의 여지가 있는 메소드는 throws를 사용하여 오류를 내포하는 함수임을 표시함.
+class VendingMachine {
+    let itemPrice: Int = 100
+    var itemCount: Int = 5
+    var deposited: Int = 0
+    
+    //돈받기메소드
+    func receiveMoney(_ money: Int) throws {
+        //입력한 돈이 0이하면 오류를 던진다.
+        guard money > 0 else {
+            throw VendingMachineError.invalidInput
+        }
+        
+        //오류가 없으면 정상처리
+        self.deposited += money
+        print("\(money)원 받음")
+    }
+    
+    //물건팔기메소드
+    func vend(numberOfItems numberOfItemsToVend: Int) throws -> String {
+        //원하는 아이템의 수량이 잘못 입력되었으면 오류를 던진다.
+        guard numberOfItemsToVend > 0 else {
+            throw VendingMachineError.invalidInput
+        }
+            
+        //구매하려는 수량보다 미리 넣어둔 돈이 적으면 오류를 던진다.
+        guard numberOfItemsToVend * itemPrice <= deposited else {
+            let moneyNeeded: Int
+            moneyNeeded = numberOfItemsToVend * itemPrice - deposited
+            
+            throw VendingMachineError.insufficientFunds(moneyNeeded: moneyNeeded)
+        }
+        
+        //구매하려는 수량보다 요구하는 수량이 많으면 오류를 던진다.
+        guard itemCount >= numberOfItemsToVend else {
+            throw VendingMachineError.outOfStock
+        }
+        
+        //오류가 없으면 정상처리를 한다.
+        let totalPrice = numberOfItemsToVend * itemPrice
+        
+        self.deposited -= totalPrice
+        self.itemCount -= numberOfItemsToVend
+        
+        return "\(numberOfItemsToVend)개 제공함"
+    }
+}
+
+//자판기 인스턴스
+let machine: VendingMachine = VendingMachine()
+
+//판매 결과를 전달받을 변수
+var result28: String?
+
+//오류처리
+//오류발생의 여지가 있는 throws 함수(메소드)는 try를 사용하여 호출해야한다.
+//try, try?, try!
+
+//do-catch 구문을 활용하여 오류발생에 대비해야한다.
+
+//try에서 오류가 발생하면(throw)되면 catch로 받는다.
+do {
+    try machine.receiveMoney(0)
+} catch VendingMachineError.invalidInput {
+    print("입력이 잘못되었습니다")
+} catch VendingMachineError.insufficientFunds(let moneyNeeded) {
+    print("\(moneyNeeded)원이 부족합니다")
+} catch VendingMachineError.outOfStock {
+    print("수량이 부족합니다")
+} //입력이 잘못되었습니다
+
+do {
+    try machine.receiveMoney(300)
+} catch /*(let error)암시적으로*/ {
+    switch error {
+    case VendingMachineError.invalidInput:
+        print("입력이 잘못되었습니다")
+    case VendingMachineError.insufficientFunds(let moneyNeeded):
+        print("\(moneyNeeded)원이 부족합니다")
+    case VendingMachineError.outOfStock:
+        print("수량이 부족합니다")
+    default:
+        print("알수없는 오류 \(error)")
+    }
+} //300원받음
+
+do {
+    result28 = try machine.vend(numberOfItems: 4)
+} catch {
+    print(error)
+} //insufficientFunds(100)
+
+
+//try?
+//별도의 오류처리 결과를 통보받지 않고 오류가 발생했으면 결과값을 nil로 돌려받을 수 있다
+//정상동작 후에는 옵셔널 타입으로 정상 반환값을 돌려 받는다.
+
+result28 =  try? machine.vend(numberOfItems: 2)
+print(result28) //Optional("2개 제공함") 아니면 //nil
+
+//try!
+//오류가 발생하지 않을 것이라는 강력한 확신을 가질 때 try!를 사용하면 정상동작 후에 바로 결과값을 돌려받는다.
+//오류가 발생하면 런타임 오류가 발생하여 애플리케이션 동작이 정지된다.
+result28 = try! machine.vend(numberOfItems: 1)
+print(result28) //1개 제공함
+
+
+//29고차함수
