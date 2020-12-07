@@ -1605,3 +1605,101 @@ print(result28) //1개 제공함
 
 
 //29고차함수
+//전달인자로 함수를 전달받거나 함수실행의 결과를 함수로 반환하는 함수
+
+//map, filter, reduce
+
+//map
+//컨테이너 내부의 기존 데이터를 변형하여 새로운 컨테이너 생성 (컨테이너 - 콜렉션, 배열, 딕셔너리, 셋..)
+let numbers: [Int] = [0, 1, 2, 3, 4]
+var doubleNumbers: [Int]
+var stringss: [String]
+
+//기존 for 구문
+doubleNumbers = [Int]()
+stringss = [String]()
+
+for number in numbers {
+    doubleNumbers.append(number * 2)
+    strings.append("\(number)")
+}
+
+print(doubleNumbers) //[0,2,4,6,8]
+print(stringss) //["0","1","2","3","4"]
+
+//map메소드 사용
+//괄호에 클로저가 들어옴
+doubleNumbers = numbers.map({ (number: Int) -> Int in
+    return number * 2
+})
+
+stringss = numbers.map({ (number: Int) -> String in
+    return "\(number)"
+})
+
+//매개변수, 반환 타입, 반환 키워드 생략, 후행 클로저
+doubleNumbers = numbers.map { $0 * 2}
+print(doubleNumbers)
+
+//filter
+//컨테이너 내부의 값을 걸러서 새로운 컨테이너로 추출
+
+//for구문 사용
+var filtered: [Int] = [Int]()
+
+for number in numbers {
+    if number % 2 == 0 {
+        filtered.append(number)
+    }
+}
+
+print(filtered) // [0,2,4]
+
+//filter메소드 사용
+//numbers의 요소 중 짝수를 걸러내어 새로운 배열로 반환
+//또 클로저 사용 Bool이 true일때만 number요소가 새로운 컨테이너에 들어간다.
+let evenNumbers: [Int] = numbers.filter {
+    (number: Int) -> Bool in
+    
+    return number % 2 == 0
+}
+print(evenNumbers) //[0,2,4]
+
+//매개변수, 반환 타입, 반환 키워드 생략, 후행 클로저
+let oddNumbers: [Int] = numbers.filter { $0 % 2 != 0 }
+
+print(oddNumbers) //[1,3]
+
+
+//reduce
+//컨테이너 내부의 콘텐츠를 하나로 통합
+let someNumbers : [Int] = [2, 8, 15 ]
+
+//기존에 for문 사용
+var result29: Int = 0
+
+for number in someNumbers {
+    result29 += number
+}
+print(result29)
+
+
+//reduce 메소드 사용
+//초기값이 0이고 someNumbers 내부의 모든 값을 더한다.
+let sum29: Int = someNumbers.reduce(0, {
+    (first: Int, second: Int) -> Int in
+    
+    return first + second
+})
+
+//초기값이 0이고 someNumbers 내부의 모든 값을 뺀다.
+let subtract29: Int = someNumbers.reduce(0, {
+    (first: Int, second: Int) -> Int in
+
+    return first - second
+})
+
+//초기값이 3이고 someNumbers 내부의 모든 값을 더한다.
+let sumFromThree = someNumbers.reduce(3) { $0 + $1 }
+
+print(someNumbers.reduce(1) { $0 * $1 })
